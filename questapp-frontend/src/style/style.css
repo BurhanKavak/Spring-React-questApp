@@ -1,0 +1,14 @@
+.navbar-header {
+    text-decoration: none;
+    box-shadow: none;
+    color: #E6E6FA;
+    
+}
+
+.container-size {
+    width: 80%;
+    padding-left: 20%;
+    height: 35%;
+    padding-top: 1.5%;
+    padding-bottom: 3%;
+}
