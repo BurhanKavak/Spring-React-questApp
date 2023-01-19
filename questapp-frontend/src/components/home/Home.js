@@ -43,6 +43,7 @@ function Home() {
                 userId={post.userId}
                 title={post.title}
                 text={post.text}
+                postLikes={post.postLikes}
               />
             ))}
           </Box>

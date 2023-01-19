@@ -1,6 +1,7 @@
 package com.example.questappbackend.services;
 
 import com.example.questappbackend.dto.LikeDtoForCreate;
+import com.example.questappbackend.dto.responses.LikeDtoResponse;
 import com.example.questappbackend.entities.Like;
 import com.example.questappbackend.entities.Post;
 import com.example.questappbackend.entities.User;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,16 +27,19 @@ public class LikeServiceImp implements LikeService {
     private final PostService postService;
 
     @Override
-    public List<Like> getAllLikesWithParam(Optional<Long> userId, Optional<Long> postId) {
+    public List<LikeDtoResponse> getAllLikesWithParam(Optional<Long> userId, Optional<Long> postId) {
+        List<Like> likes;
        if (userId.isPresent() && postId.isPresent()) {
-           return likeRepository.findByUserIdAndPostId(userId.get(),postId.get());
+           likes = likeRepository.findByUserIdAndPostId(userId.get(),postId.get());
        } else if (userId.isPresent()) {
-           return likeRepository.findByUserId(userId.get());
+           likes = likeRepository.findByUserId(userId.get());
        } else if (postId.isPresent()) {
-           return likeRepository.findByPostId(postId.get());
+           likes = likeRepository.findByPostId(postId.get());
        } else {
-           return likeRepository.findAll();
+           likes = likeRepository.findAll();
        }
+        return likes.stream().map(like -> new
+                LikeDtoResponse(like)).collect(Collectors.toList());
     }
 
     @Override

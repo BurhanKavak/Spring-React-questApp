@@ -1,6 +1,7 @@
 package com.example.questappbackend.controllers;
 
 import com.example.questappbackend.dto.LikeDtoForCreate;
+import com.example.questappbackend.dto.responses.LikeDtoResponse;
 import com.example.questappbackend.entities.Like;
 import com.example.questappbackend.services.abs.LikeService;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/likes")
+@CrossOrigin
 public class LikeController {
 
     private final LikeService likeService;
@@ -20,7 +22,7 @@ public class LikeController {
 
 
     @GetMapping
-    public List<Like> getAllLikes (@RequestParam Optional<Long> userId,@RequestParam Optional<Long> postId){
+    public List<LikeDtoResponse> getAllLikes (@RequestParam Optional<Long> userId, @RequestParam Optional<Long> postId){
         return likeService.getAllLikesWithParam(userId,postId);
     }
 

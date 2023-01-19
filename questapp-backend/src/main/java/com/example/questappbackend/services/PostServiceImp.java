@@ -2,13 +2,15 @@ package com.example.questappbackend.services;
 
 import com.example.questappbackend.dto.PostDtoForCreate;
 import com.example.questappbackend.dto.PostDtoForUpdate;
+import com.example.questappbackend.dto.responses.LikeDtoResponse;
 import com.example.questappbackend.dto.responses.PostDtoResponse;
 import com.example.questappbackend.entities.Post;
 import com.example.questappbackend.entities.User;
 import com.example.questappbackend.repository.PostRepository;
+import com.example.questappbackend.services.abs.LikeService;
 import com.example.questappbackend.services.abs.PostService;
 import com.example.questappbackend.services.abs.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +18,24 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class PostServiceImp implements PostService {
 
-    private final PostRepository postRepository;
+    private PostRepository postRepository;
 
-    private final UserService userService;
+    private LikeService likeService;
+
+    private UserService userService;
+
+    public PostServiceImp(PostRepository postRepository,
+                       UserService userService) {
+        this.postRepository = postRepository;
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setLikeService(LikeService likeService) {
+        this.likeService = likeService;
+    }
 
 
     @Override
@@ -32,7 +46,9 @@ public class PostServiceImp implements PostService {
         } else {
             list = postRepository.findAll();
         }
-        return list.stream().map(p -> new PostDtoResponse(p)).collect(Collectors.toList());
+        return list.stream().map(post -> {
+            List<LikeDtoResponse> likes = likeService.getAllLikesWithParam(Optional.ofNullable(null),Optional.of(post.getId()));
+            return new PostDtoResponse(post,likes);}).collect(Collectors.toList());
 
     }
 
