@@ -47,7 +47,7 @@ public class CommentServiceImp implements CommentService {
 
     @Override
     public Comment createOneComment(CommentDtoForCreate request) {
-        User user = userService.getOneUser(request.getUserId());
+        User user = userService.getOneUserById(request.getUserId());
         Post post = postService.getOnePost(request.getPostId());
 
         if (user != null && post != null){

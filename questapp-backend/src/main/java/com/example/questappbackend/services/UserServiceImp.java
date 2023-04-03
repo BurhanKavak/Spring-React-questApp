@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImp implements UserService {
 
-    private final UserRepository userRepository;
+      UserRepository userRepository;
+
+    public UserServiceImp(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<User> getAllUsers() {
@@ -21,7 +24,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User getOneUser(Long userId) {
+    public User getOneUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
@@ -34,7 +37,7 @@ public class UserServiceImp implements UserService {
     public User updateOneUser(User newUser, Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()){
-            User foundUser = getOneUser(userId);
+            User foundUser = getOneUserById(userId);
             foundUser.setUserName(newUser.getUserName());
             foundUser.setPassword(newUser.getPassword());
             userRepository.save(foundUser);
@@ -46,7 +49,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void deleteOneUser(Long userId) {
-        userRepository.deleteById(getOneUser(userId).getId());
+        userRepository.deleteById(getOneUserById(userId).getId());
 
+    }
+
+    @Override
+    public User getOneUserByUserName(String userName) {
+        return userRepository.findByUserName(userName);
     }
 }

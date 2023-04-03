@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +60,7 @@ public class PostServiceImp implements PostService {
 
     @Override
     public Post createOnePost(PostDtoForCreate request) {
-        User user = userService.getOneUser(request.getUserId());
+        User user = userService.getOneUserById(request.getUserId());
         if (user == null) {
             return null;
         }

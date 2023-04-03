@@ -8,7 +8,7 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User getOneUser(Long userId);
+    User getOneUserById(Long userId);
 
     User createOneUser(User user);
 
@@ -16,4 +16,5 @@ public interface UserService {
 
     void deleteOneUser(Long userId);
 
+    User getOneUserByUserName(String userName);
 }
